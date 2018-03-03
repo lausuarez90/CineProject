@@ -9,7 +9,20 @@ public class Sala {
 	private int numSillas;
 	private String idioma;
 	private List<Horario> horarios;
+	private List<Silla> sillas;
 	
+	public List<Horario> getHorarios() {
+		return horarios;
+	}
+	public void setHorarios(List<Horario> horarios) {
+		this.horarios = horarios;
+	}
+	public List<Silla> getSillas() {
+		return sillas;
+	}
+	public void setSillas(List<Silla> sillas) {
+		this.sillas = sillas;
+	}
 	public int getId() {
 		return id;
 	}
