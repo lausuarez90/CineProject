@@ -39,21 +39,22 @@ public class CinemaView extends CustomComponent implements View{
         horizontal.setSizeFull();
         horizontal.addComponent(logoEmpresa);
         horizontal.setComponentAlignment(logoEmpresa, Alignment.TOP_LEFT);
-        horizontal.addComponent(name); 
-		
-		Panel panel = new Panel("Cinepolis");
-        panel.setSizeUndefined();
-        
-        VerticalLayout verticalCinema = new VerticalLayout();        
+        horizontal.addComponent(name); 		
         
         ComboBox combobox = new ComboBox("Selecciona un cinema");
         combobox.setInvalidAllowed(false);
         combobox.setNullSelectionAllowed(false);
         combobox.addItems("Calima", "Hayuelos", "Multiplaza");
         
-        verticalCinema.addComponent(combobox);
+        HorizontalLayout horizontalCinema = new HorizontalLayout();       
+        horizontalCinema.setSizeFull();       
+        horizontalCinema.addComponent(combobox);
+        horizontalCinema.setComponentAlignment(combobox, Alignment.TOP_LEFT);
         
         HorizontalLayout horizontalLayout = new HorizontalLayout();
+        
+        Panel panel = new Panel("Cinepolis");
+        panel.setSizeUndefined();
         
         Button buttonCinepo = new Button();
         buttonCinepo.setIcon(new ThemeResource("images/cinepolis2.png"));
@@ -109,16 +110,26 @@ public class CinemaView extends CustomComponent implements View{
         
         panel.setContent(horizontalLayout);
         
+        HorizontalLayout horiCinema = new HorizontalLayout();
+        horiCinema.addComponent(panel);
+        horiCinema.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
+        
         HorizontalLayout horiPeliculas = new HorizontalLayout();
-        horiPeliculas.addComponent(verticalCinema);
-        horiPeliculas.setMargin(true);
+//        horiPeliculas.setSizeFull();
+//        horiPeliculas.setMargin(true);
         horiPeliculas.setSpacing(true);
-        horiPeliculas.addComponent(panel);
+        horiPeliculas.addComponent(combobox);
+        horiPeliculas.setComponentAlignment(combobox, Alignment.TOP_LEFT);
+//        horiPeliculas.addComponent(horizontalCinema);
+//        horiPeliculas.setComponentAlignment(horizontalCinema, Alignment.MIDDLE_LEFT);
+       
+        horiPeliculas.addComponent(horiCinema);
+        horiPeliculas.setComponentAlignment(horiCinema, Alignment.MIDDLE_CENTER);
         
         layout.addComponent(horizontal);
         layout.setComponentAlignment(horizontal, Alignment.MIDDLE_CENTER);
         layout.addComponent(horiPeliculas);
-        layout.setComponentAlignment(horiPeliculas, Alignment.MIDDLE_LEFT);
+//        layout.setComponentAlignment(horiPeliculas, Alignment.MIDDLE_CENTER);
         layout.setMargin(true);
         layout.setSpacing(true);
 				
