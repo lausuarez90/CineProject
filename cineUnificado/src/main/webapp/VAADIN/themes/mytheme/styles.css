@@ -13229,3 +13229,10 @@ div.v-layout.v-horizontal.v-widget {
 	width: 19px;
 	overflow: hidden;
 }
+
+.mytheme .mytheme .v-caption-mycaption {
+	font-size: 20px;
+	font-weight: bold;
+	padding-bottom: 0.3em;
+	padding-left: 1px;
+}
