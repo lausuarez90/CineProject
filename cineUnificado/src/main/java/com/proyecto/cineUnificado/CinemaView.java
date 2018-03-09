@@ -21,7 +21,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class CinemaView extends CustomComponent implements View{
 
 	private static final long serialVersionUID = 1L;
-	public final static String NAME = "pelicula";
+	public final static String NAME = "peliculas";
 	
 	public CinemaView() {
 		
@@ -63,7 +63,7 @@ public class CinemaView extends CustomComponent implements View{
         buttonCinepo.setHeight("160px");
         buttonCinepo.setWidth("160px");
         buttonCinepo.addClickListener( e -> {
-        	getUI().getNavigator().navigateTo(CinemaView.NAME);
+        	getUI().getNavigator().navigateTo(PeliculaView.NAME);
         });
         
         Button buttonCineCol = new Button();
