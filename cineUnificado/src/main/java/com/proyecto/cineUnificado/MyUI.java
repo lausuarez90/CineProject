@@ -3,6 +3,8 @@ package com.proyecto.cineUnificado;
 import javax.inject.Inject;
 import javax.servlet.annotation.WebServlet;
 
+import com.proyecto.cineUnificado.persistencia.ConexionBD;
+import com.proyecto.cineUnificado.persistencia.EmpresasDAO;
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -51,8 +53,9 @@ public class MyUI extends UI {
     	navigator.addView(PeliculaView.NAME, new PeliculaView());
     	
     	navigator.addProvider(viewProvider);
-    	navigator.navigateTo(EmpresaView.NAME);    	    	
+    	navigator.navigateTo(EmpresaView.NAME);    	
     	
+    	   	
     }
 
   

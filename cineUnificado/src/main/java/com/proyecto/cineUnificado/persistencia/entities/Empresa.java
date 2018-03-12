@@ -1,6 +1,6 @@
-package com.proyecto.cineUnificado.modelo;
+package com.proyecto.cineUnificado.persistencia.entities;
 
-public abstract class Empresa {
+public class Empresa {
 
 	private int id;
 	private String nombre;
@@ -28,6 +28,7 @@ public abstract class Empresa {
 	public String toString() {
 		return "Empresa [id=" + id + ", nombre=" + nombre + ", nit=" + nit + "]";
 	}
+	
 	
 	
 }

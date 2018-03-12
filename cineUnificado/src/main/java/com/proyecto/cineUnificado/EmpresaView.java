@@ -1,5 +1,11 @@
 package com.proyecto.cineUnificado;
 
+import java.util.List;
+
+
+import com.proyecto.cineUnificado.persistencia.ConexionBD;
+import com.proyecto.cineUnificado.persistencia.EmpresasDAO;
+import com.proyecto.cineUnificado.persistencia.entities.Empresa;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -20,7 +26,10 @@ public class EmpresaView extends CustomComponent implements View {
 	
 	public final static String NAME = "";
 	
-	public EmpresaView() {
+	public EmpresaView() {		
+		
+    	EmpresasDAO empresasDAO = new EmpresasDAO();
+    	List<Empresa> empresas = empresasDAO.consultarEmpresas();
 		
 		final VerticalLayout layout = new VerticalLayout();
         
@@ -32,58 +41,45 @@ public class EmpresaView extends CustomComponent implements View {
         Label name = new Label();
         name.setCaption("Bienvenidos aqui puedes revisar la cartelera de tus cinemas favoritos!!!");
         name.addStyleName("mycaption");
-
-        Button buttonCinepo = new Button();
-        buttonCinepo.setIcon(new ThemeResource("images/cinepolis2.png"));
-        buttonCinepo.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-        buttonCinepo.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-        buttonCinepo.setHeight("160px");
-        buttonCinepo.setWidth("160px");
-        buttonCinepo.addClickListener( e -> {
-        	getUI().getNavigator().navigateTo(CinemaView.NAME);
-        });
         
-        Button buttonCineCol = new Button();
-        buttonCineCol.setIcon(new ThemeResource("images/cineColombia.jpg"));
-        buttonCineCol.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-        buttonCineCol.addStyleName(ValoTheme.BUTTON_BORDERLESS);        
-        buttonCineCol.setHeight("160px");
-        buttonCineCol.setWidth("160px");
-        buttonCineCol.addClickListener( e -> {
-            layout.addComponent(new Label("Se selecciono Cinecolombia "));
-        });
-        
-        Button buttonCineMark = new Button();
-        buttonCineMark.setIcon(new ThemeResource("images/cinemark.png"));
-        buttonCineMark.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-        buttonCineMark.addStyleName(ValoTheme.BUTTON_BORDERLESS);     
-        buttonCineMark.setHeight("71px");
-        buttonCineMark.setWidth("160px");
-        buttonCineMark.addClickListener( e -> {
-            layout.addComponent(new Label("Se selecciono CineMark "));
-        });
-        
-        Button buttonProcinal = new Button();
-        buttonProcinal.setIcon(new ThemeResource("images/Procinal.png"));
-        buttonProcinal.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-        buttonProcinal.addStyleName(ValoTheme.BUTTON_BORDERLESS);   
-        buttonProcinal.setHeight("80px");
-        buttonProcinal.setWidth("160px");
-        buttonProcinal.addClickListener( e -> {
-            layout.addComponent(new Label("Se selecciono Procinal "));
-        });
-        
-       
-        horizontalLayout.addComponent(buttonCinepo);
-        horizontalLayout.setComponentAlignment(buttonCinepo, Alignment.MIDDLE_CENTER);
-        horizontalLayout.addComponent(buttonCineCol);
-        horizontalLayout.setComponentAlignment(buttonCineCol, Alignment.MIDDLE_CENTER);
-        horizontalLayout.addComponent(buttonCineMark);
-        horizontalLayout.setComponentAlignment(buttonCineMark, Alignment.MIDDLE_CENTER);
-        horizontalLayout.addComponent(buttonProcinal);
-        horizontalLayout.setComponentAlignment(buttonProcinal, Alignment.MIDDLE_CENTER);
+        for (Empresa empresa : empresas) {
+			
+        	Button buttonCine = new Button();
+        	ThemeResource resource = null;
+        	
+        	if (empresa.getNombre().equals("Cinepolis")){
+        		resource = new ThemeResource("images/cinepolis2.png");
+        		buttonCine.setHeight("160px");
+        		buttonCine.setWidth("160px");
+        	}else if (empresa.getNombre().equals("CineColombia")){
+        		resource = new ThemeResource("images/cineColombia.jpg");
+        		buttonCine.setHeight("160px");
+        		buttonCine.setWidth("160px");
+        	}else if (empresa.getNombre().equals("CineMark")){
+        		resource = new ThemeResource("images/cinemark.png");
+        		buttonCine.setHeight("71px");
+                buttonCine.setWidth("160px");
+        	}else if (empresa.getNombre().equals("Procinal")){
+        		resource = new ThemeResource("images/Procinal.png");
+        		buttonCine.setHeight("80px");
+                buttonCine.setWidth("160px");
+        	}
+        	buttonCine.setIcon(resource);
+        	buttonCine.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+        	buttonCine.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+            
+           
+            buttonCine.addClickListener( e -> {
+            	getUI().getNavigator().navigateTo(CinemaView.NAME);
+            });
+		
+      
+        horizontalLayout.addComponent(buttonCine);
+        horizontalLayout.setComponentAlignment(buttonCine, Alignment.MIDDLE_CENTER);
         horizontalLayout.setMargin(true);
         horizontalLayout.setSpacing(true);
+        
+        }
         
         panel.setContent(horizontalLayout);
         
