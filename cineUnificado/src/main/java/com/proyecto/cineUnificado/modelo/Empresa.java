@@ -2,21 +2,21 @@ package com.proyecto.cineUnificado.modelo;
 
 public abstract class Empresa {
 
-	private int id;
-	private String nombre;
+	private int idEmpresa;
+	private String nombreEmpresa;
 	private String nit;
 	
-	public int getId() {
-		return id;
+	public int getIdEmpresa() {
+		return idEmpresa;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setIdEmpresa(int id) {
+		this.idEmpresa = id;
 	}
-	public String getNombre() {
-		return nombre;
+	public String getNombreEmpresa() {
+		return nombreEmpresa;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombreEmpresa(String nombre) {
+		this.nombreEmpresa = nombre;
 	}
 	public String getNit() {
 		return nit;
@@ -26,7 +26,7 @@ public abstract class Empresa {
 	}
 	@Override
 	public String toString() {
-		return "Empresa [id=" + id + ", nombre=" + nombre + ", nit=" + nit + "]";
+		return "Empresa [id=" + idEmpresa + ", nombre=" + nombreEmpresa + ", nit=" + nit + "]";
 	}
 	
 	

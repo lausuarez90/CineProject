@@ -7,12 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.proyecto.cineUnificado.Interfaces.InterfaceCine;
 import com.proyecto.cineUnificado.persistencia.entities.Empresa;
 
 public class EmpresasDAO {
 	
 	Connection connection = null;
 	ConexionBD conexionBD;
+	
 	
 	public EmpresasDAO() {
 		
@@ -32,8 +34,8 @@ public class EmpresasDAO {
 			
 			while (rs.next()) {
 	            Empresa empresa = new Empresa();
-	            empresa.setId(rs.getInt(1));
-	            empresa.setNombre(rs.getString(2));
+	            empresa.setIdEmpresa(rs.getInt(1));
+	            empresa.setNombreEmpresa(rs.getString(2));
 	            empresa.setNit(rs.getString(3));
                 System.out.print(empresa.toString());
                 empresas.add(empresa);

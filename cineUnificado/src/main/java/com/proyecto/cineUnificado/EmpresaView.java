@@ -2,10 +2,11 @@ package com.proyecto.cineUnificado;
 
 import java.util.List;
 
-
+import com.proyecto.cineUnificado.ImpInterface.ImpInterfaceCine;
+import com.proyecto.cineUnificado.Interfaces.InterfaceCine;
+import com.proyecto.cineUnificado.modelo.Empresa;
 import com.proyecto.cineUnificado.persistencia.ConexionBD;
 import com.proyecto.cineUnificado.persistencia.EmpresasDAO;
-import com.proyecto.cineUnificado.persistencia.entities.Empresa;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -24,12 +25,13 @@ import com.vaadin.ui.themes.ValoTheme;
 @CDIView(EmpresaView.NAME)
 public class EmpresaView extends CustomComponent implements View {
 	
+	InterfaceCine interfaceCine;
 	public final static String NAME = "";
 	
 	public EmpresaView() {		
 		
-    	EmpresasDAO empresasDAO = new EmpresasDAO();
-    	List<Empresa> empresas = empresasDAO.consultarEmpresas();
+    	interfaceCine = new ImpInterfaceCine();
+    	List<Empresa> empresas = interfaceCine.consultarEmpresas();
 		
 		final VerticalLayout layout = new VerticalLayout();
         
@@ -47,19 +49,19 @@ public class EmpresaView extends CustomComponent implements View {
         	Button buttonCine = new Button();
         	ThemeResource resource = null;
         	
-        	if (empresa.getNombre().equals("Cinepolis")){
+        	if (empresa.getNombreEmpresa().equals("Cinepolis")){
         		resource = new ThemeResource("images/cinepolis2.png");
         		buttonCine.setHeight("160px");
         		buttonCine.setWidth("160px");
-        	}else if (empresa.getNombre().equals("CineColombia")){
+        	}else if (empresa.getNombreEmpresa().equals("CineColombia")){
         		resource = new ThemeResource("images/cineColombia.jpg");
         		buttonCine.setHeight("160px");
         		buttonCine.setWidth("160px");
-        	}else if (empresa.getNombre().equals("CineMark")){
+        	}else if (empresa.getNombreEmpresa().equals("CineMark")){
         		resource = new ThemeResource("images/cinemark.png");
         		buttonCine.setHeight("71px");
                 buttonCine.setWidth("160px");
-        	}else if (empresa.getNombre().equals("Procinal")){
+        	}else if (empresa.getNombreEmpresa().equals("Procinal")){
         		resource = new ThemeResource("images/Procinal.png");
         		buttonCine.setHeight("80px");
                 buttonCine.setWidth("160px");
@@ -70,7 +72,7 @@ public class EmpresaView extends CustomComponent implements View {
             
            
             buttonCine.addClickListener( e -> {
-            	getUI().getNavigator().navigateTo(CinemaView.NAME);
+            	getUI().getNavigator().navigateTo(CinemaView.NAME + "/" + empresa.getIdEmpresa() + "/" + empresa.getNombreEmpresa() + "/" + empresa.getNit());
             });
 		
       

@@ -1,20 +1,13 @@
-package com.proyecto.cineUnificado.modelo;
+package com.proyecto.cineUnificado.persistencia.entities;
 
-public class Cinema extends Empresa{
+public class Cinema {
 	
 	private int id;
 	private String nombre;
 	private String direccion;
 	private String telefono;
+	private int idTipoCinema;
 	
-	private Cartelera cartelera;
-	
-	public Cartelera getCartelera() {
-		return cartelera;
-	}
-	public void setCartelera(Cartelera cartelera) {
-		this.cartelera = cartelera;
-	}
 	public int getId() {
 		return id;
 	}
@@ -38,6 +31,17 @@ public class Cinema extends Empresa{
 	}
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
+	}
+	public int getIdTipoCinema() {
+		return idTipoCinema;
+	}
+	public void setIdTipoCinema(int idTipoCinema) {
+		this.idTipoCinema = idTipoCinema;
+	}
+	@Override
+	public String toString() {
+		return "Cinema [id=" + id + ", nombre=" + nombre + ", direccion=" + direccion + ", telefono=" + telefono
+				+ ", idTipoCinema=" + idTipoCinema + "]";
 	}
 	
 	

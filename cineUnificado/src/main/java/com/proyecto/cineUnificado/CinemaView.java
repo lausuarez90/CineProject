@@ -1,6 +1,13 @@
 package com.proyecto.cineUnificado;
 
 
+import java.sql.SQLException;
+import java.util.List;
+
+import com.proyecto.cineUnificado.ImpInterface.ImpInterfaceCine;
+import com.proyecto.cineUnificado.Interfaces.InterfaceCine;
+import com.proyecto.cineUnificado.modelo.Cinema;
+import com.proyecto.cineUnificado.persistencia.CinemaDAO;
 import com.vaadin.cdi.CDIUI;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -22,30 +29,74 @@ public class CinemaView extends CustomComponent implements View{
 
 	private static final long serialVersionUID = 1L;
 	public final static String NAME = "peliculas";
+	InterfaceCine interfaceCine;
 	
 	public CinemaView() {
+		interfaceCine = new ImpInterfaceCine();	
+		
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		
+		String[] empresaSeleccionada = event.getParameters().split("/");
+		String id = empresaSeleccionada[0];
+		String nombre = empresaSeleccionada[1];
+		String nit = empresaSeleccionada[2];
+		Notification.show("Estas en cine");
 		
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 		
+		HorizontalLayout labelName = new HorizontalLayout();
 		Label name = new Label();
-        name.setCaption("Cartelera Cinepolis en Bogotá");
+        name.setCaption("Cartelera " +  nombre + " en Bogotá");
         name.addStyleName("mycaption");
+        labelName.addComponent(name);
         
-        ThemeResource resource = new ThemeResource("images/cinepolis2.png");
+        ThemeResource resource = null;
+        
+        if (nombre.equals("Cinepolis")){
+    		resource = new ThemeResource("images/cinepolis2.png");    		
+    	}else if (nombre.equals("CineColombia")){
+    		resource = new ThemeResource("images/cineColombia.jpg");    		
+    	}else if (nombre.equals("CineMark")){
+    		resource = new ThemeResource("images/cinemark.png");    	
+    	}else if (nombre.equals("Procinal")){
+    		resource = new ThemeResource("images/Procinal.png");    	
+    	}
+        
         Image logoEmpresa = new Image("", resource);
+        
+        VerticalLayout verticalPeli = new VerticalLayout();
+        Label labelNombre = new Label("Nombre");
+        Label labelNit = new Label("Nit");
+        verticalPeli.addComponent(labelNombre);
+        verticalPeli.addComponent(labelNit);
         
         HorizontalLayout horizontal = new HorizontalLayout();
         horizontal.setSizeFull();
         horizontal.addComponent(logoEmpresa);
         horizontal.setComponentAlignment(logoEmpresa, Alignment.TOP_LEFT);
-        horizontal.addComponent(name); 		
+        horizontal.addComponent(verticalPeli);
+        horizontal.setComponentAlignment(verticalPeli, Alignment.TOP_RIGHT);
+        
+        VerticalLayout verticalGeneral = new VerticalLayout();
+        verticalGeneral.addComponent(labelName);
+        verticalGeneral.setComponentAlignment(labelName, Alignment.MIDDLE_CENTER);
+        verticalGeneral.addComponent(horizontal);
         
         ComboBox combobox = new ComboBox("Selecciona un cinema");
         combobox.setInvalidAllowed(false);
         combobox.setNullSelectionAllowed(false);
-        combobox.addItems("Calima", "Hayuelos", "Multiplaza");
         
+		List<Cinema> cinemas;
+
+		cinemas = interfaceCine.consultarCinemasPorEmpresa(Integer.valueOf(id));
+		for (Cinema cinema : cinemas) {
+			combobox.addItem(cinema.getNombre());
+		}
+                
         HorizontalLayout horizontalCinema = new HorizontalLayout();       
         horizontalCinema.setSizeFull();       
         horizontalCinema.addComponent(combobox);
@@ -126,19 +177,14 @@ public class CinemaView extends CustomComponent implements View{
         horiPeliculas.addComponent(horiCinema);
         horiPeliculas.setComponentAlignment(horiCinema, Alignment.MIDDLE_CENTER);
         
-        layout.addComponent(horizontal);
-        layout.setComponentAlignment(horizontal, Alignment.MIDDLE_CENTER);
+        layout.addComponent(verticalGeneral);
+        layout.setComponentAlignment(verticalGeneral, Alignment.MIDDLE_CENTER);
         layout.addComponent(horiPeliculas);
 //        layout.setComponentAlignment(horiPeliculas, Alignment.MIDDLE_CENTER);
         layout.setMargin(true);
         layout.setSpacing(true);
 				
 		setCompositionRoot(layout);
-	}
-
-	@Override
-	public void enter(ViewChangeEvent event) {
-		Notification.show("Estas en cine");
 		
 	}
 
