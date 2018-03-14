@@ -12,5 +12,7 @@ public interface InterfaceCine  {
 	public Empresa consultarEmpresaPorId(int id);
 	
 	public List<Cinema> consultarCinemasPorEmpresa(int idEmpresa);
+	
+	public Cinema consultarPeliculasporCinema(Cinema idCinema);
 
 }

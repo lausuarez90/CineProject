@@ -9,9 +9,14 @@ import com.proyecto.cineUnificado.Interfaces.InterfaceCine;
 import com.proyecto.cineUnificado.modelo.Cinema;
 import com.proyecto.cineUnificado.persistencia.CinemaDAO;
 import com.vaadin.cdi.CDIUI;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -30,6 +35,7 @@ public class CinemaView extends CustomComponent implements View{
 	private static final long serialVersionUID = 1L;
 	public final static String NAME = "peliculas";
 	InterfaceCine interfaceCine;
+	Cinema cinemaEncontrado;
 	
 	public CinemaView() {
 		interfaceCine = new ImpInterfaceCine();	
@@ -86,82 +92,134 @@ public class CinemaView extends CustomComponent implements View{
         verticalGeneral.setComponentAlignment(labelName, Alignment.MIDDLE_CENTER);
         verticalGeneral.addComponent(horizontal);
         
-        ComboBox combobox = new ComboBox("Selecciona un cinema");
-        combobox.setInvalidAllowed(false);
-        combobox.setNullSelectionAllowed(false);
-        
-		List<Cinema> cinemas;
+               
 		
-		
-		cinemas = interfaceCine.consultarCinemasPorEmpresa(Integer.valueOf(id));
+		List<Cinema> cinemas = interfaceCine.consultarCinemasPorEmpresa(Integer.valueOf(id));
+		BeanItemContainer<Cinema> container = new BeanItemContainer<Cinema>(Cinema.class);
 		for (Cinema cinema : cinemas) {
 			cinema.setIdEmpresa(Integer.valueOf(id));
 			cinema.setNombreEmpresa(nombre);
 			cinema.setNit(nit);
-			combobox.addItem(cinema.getNombre());
+			container.addItem(cinema);			
 		}
-                
+		
+		ComboBox combobox = new ComboBox("Selecciona un cinema", container);
+        
+        combobox.setInvalidAllowed(false);
+        combobox.setNullSelectionAllowed(false); 
+        
+        combobox.setItemCaptionMode(ItemCaptionMode.PROPERTY);
+        combobox.setItemCaptionPropertyId("nombre");
+        
+		
+		combobox.setImmediate(true);
+		
         HorizontalLayout horizontalCinema = new HorizontalLayout();       
         horizontalCinema.setSizeFull();       
         horizontalCinema.addComponent(combobox);
         horizontalCinema.setComponentAlignment(combobox, Alignment.TOP_LEFT);
         
+               
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         
-        Panel panel = new Panel("Cinepolis");
+        Panel panel = new Panel(nombre);
         panel.setSizeUndefined();
         
-        Button buttonCinepo = new Button();
-        buttonCinepo.setIcon(new ThemeResource("images/cinepolis2.png"));
-        buttonCinepo.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-        buttonCinepo.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-        buttonCinepo.setHeight("160px");
-        buttonCinepo.setWidth("160px");
-        buttonCinepo.addClickListener( e -> {
-        	getUI().getNavigator().navigateTo(PeliculaView.NAME);
-        });
+       
+        combobox.addValueChangeListener(new ValueChangeListener() {
+			
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				
+				Object itemId = event.getProperty().getValue();
+		        BeanItem<?> item = (BeanItem<?>) combobox.getItem(itemId);
+		        
+		        // Get the actual bean and use the data
+		        Cinema cinema = (Cinema) item.getBean();
+
+				System.out.println("selecciono " +cinema.getId() + " nombre " + cinema.getNombre());	
+				
+				cinemaEncontrado = interfaceCine.consultarPeliculasporCinema(cinema);
+				
+				 List peliculas = cinemaEncontrado.getCartelera().getPeliculas();
+			        
+			        if (peliculas != null){
+			        	horizontalLayout.removeAllComponents();
+			        	 for (Object object : peliculas) {
+			             	
+			             	Button buttonCinepo = new Button();
+			             	buttonCinepo.setIcon(new ThemeResource("images/anunciosCrimen.jpg"));
+			             	buttonCinepo.setSizeFull();
+			             	buttonCinepo.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+			                 buttonCinepo.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+			                 buttonCinepo.addClickListener( e -> {
+			                 	getUI().getNavigator().navigateTo(PeliculaView.NAME);
+			                 });
+			                 
+			                 horizontalLayout.addComponent(buttonCinepo);
+			                 horizontalLayout.setComponentAlignment(buttonCinepo, Alignment.MIDDLE_CENTER);
+			                 horizontalLayout.setMargin(true);
+			                 horizontalLayout.setSpacing(true);
+			     			
+			     		}
+			        }
+								
+			}
+		});
+
+       
         
-        Button buttonCineCol = new Button();
-//        buttonCineCol.setIcon(new ThemeResource("images/cineColombia.jpg"));
-        buttonCineCol.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-        buttonCineCol.addStyleName(ValoTheme.BUTTON_BORDERLESS);        
-        buttonCineCol.setHeight("160px");
-        buttonCineCol.setWidth("160px");
-        buttonCineCol.addClickListener( e -> {
-            layout.addComponent(new Label("Se selecciono Cinecolombia "));
-        });
+//        Button buttonCinepo = new Button();
+//        buttonCinepo.setIcon(new ThemeResource("images/cinepolis2.png"));
+//        buttonCinepo.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+//        buttonCinepo.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+//        buttonCinepo.setHeight("160px");
+//        buttonCinepo.setWidth("160px");
+//        buttonCinepo.addClickListener( e -> {
+//        	getUI().getNavigator().navigateTo(PeliculaView.NAME);
+//        });
+//        
+//        Button buttonCineCol = new Button();
+////        buttonCineCol.setIcon(new ThemeResource("images/cineColombia.jpg"));
+//        buttonCineCol.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+//        buttonCineCol.addStyleName(ValoTheme.BUTTON_BORDERLESS);        
+//        buttonCineCol.setHeight("160px");
+//        buttonCineCol.setWidth("160px");
+//        buttonCineCol.addClickListener( e -> {
+//            layout.addComponent(new Label("Se selecciono Cinecolombia "));
+//        });
+//        
+//        Button buttonCineMark = new Button();
+////        buttonCineMark.setIcon(new ThemeResource("images/cinemark.png"));
+//        buttonCineMark.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+//        buttonCineMark.addStyleName(ValoTheme.BUTTON_BORDERLESS);     
+//        buttonCineMark.setHeight("71px");
+//        buttonCineMark.setWidth("160px");
+//        buttonCineMark.addClickListener( e -> {
+//            layout.addComponent(new Label("Se selecciono CineMark "));
+//        });
+//        
+//        Button buttonProcinal = new Button();
+////        buttonProcinal.setIcon(new ThemeResource("images/Procinal.png"));
+//        buttonProcinal.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+//        buttonProcinal.addStyleName(ValoTheme.BUTTON_BORDERLESS);   
+//        buttonProcinal.setHeight("80px");
+//        buttonProcinal.setWidth("160px");
+//        buttonProcinal.addClickListener( e -> {
+//            layout.addComponent(new Label("Se selecciono Procinal "));
+//        });
         
-        Button buttonCineMark = new Button();
-//        buttonCineMark.setIcon(new ThemeResource("images/cinemark.png"));
-        buttonCineMark.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-        buttonCineMark.addStyleName(ValoTheme.BUTTON_BORDERLESS);     
-        buttonCineMark.setHeight("71px");
-        buttonCineMark.setWidth("160px");
-        buttonCineMark.addClickListener( e -> {
-            layout.addComponent(new Label("Se selecciono CineMark "));
-        });
         
-        Button buttonProcinal = new Button();
-//        buttonProcinal.setIcon(new ThemeResource("images/Procinal.png"));
-        buttonProcinal.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-        buttonProcinal.addStyleName(ValoTheme.BUTTON_BORDERLESS);   
-        buttonProcinal.setHeight("80px");
-        buttonProcinal.setWidth("160px");
-        buttonProcinal.addClickListener( e -> {
-            layout.addComponent(new Label("Se selecciono Procinal "));
-        });
-        
-        
-        horizontalLayout.addComponent(buttonCinepo);
-        horizontalLayout.setComponentAlignment(buttonCinepo, Alignment.MIDDLE_CENTER);
-        horizontalLayout.addComponent(buttonCineCol);
-        horizontalLayout.setComponentAlignment(buttonCineCol, Alignment.MIDDLE_CENTER);
-        horizontalLayout.addComponent(buttonCineMark);
-        horizontalLayout.setComponentAlignment(buttonCineMark, Alignment.MIDDLE_CENTER);
-        horizontalLayout.addComponent(buttonProcinal);
-        horizontalLayout.setComponentAlignment(buttonProcinal, Alignment.MIDDLE_CENTER);
-        horizontalLayout.setMargin(true);
-        horizontalLayout.setSpacing(true);
+//        horizontalLayout.addComponent(buttonCinepo);
+//        horizontalLayout.setComponentAlignment(buttonCinepo, Alignment.MIDDLE_CENTER);
+//        horizontalLayout.addComponent(buttonCineCol);
+//        horizontalLayout.setComponentAlignment(buttonCineCol, Alignment.MIDDLE_CENTER);
+//        horizontalLayout.addComponent(buttonCineMark);
+//        horizontalLayout.setComponentAlignment(buttonCineMark, Alignment.MIDDLE_CENTER);
+//        horizontalLayout.addComponent(buttonProcinal);
+//        horizontalLayout.setComponentAlignment(buttonProcinal, Alignment.MIDDLE_CENTER);
+//        horizontalLayout.setMargin(true);
+//        horizontalLayout.setSpacing(true);
         
         panel.setContent(horizontalLayout);
         
