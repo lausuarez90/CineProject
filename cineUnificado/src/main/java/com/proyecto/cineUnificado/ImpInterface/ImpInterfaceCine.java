@@ -34,6 +34,20 @@ public class ImpInterfaceCine implements InterfaceCine{
 		return empresas;		
 	}
 	
+	public Empresa consultarEmpresaPorId(int id) {
+
+		com.proyecto.cineUnificado.persistencia.entities.Empresa empresa = empresasDAO.consultarEmpresaPorId(id);
+
+		Empresa empresaModelo = new Empresa() {
+		};
+		empresaModelo.setIdEmpresa(empresa.getIdEmpresa());
+		empresaModelo.setNit(empresa.getNit());
+		empresaModelo.setNombreEmpresa(empresa.getNombreEmpresa());
+		
+
+		return empresaModelo;
+	}
+	
 	
 	public List<Cinema> consultarCinemasPorEmpresa(int idEmpresa){
 		

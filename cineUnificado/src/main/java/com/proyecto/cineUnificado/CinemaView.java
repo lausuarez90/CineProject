@@ -69,8 +69,8 @@ public class CinemaView extends CustomComponent implements View{
         Image logoEmpresa = new Image("", resource);
         
         VerticalLayout verticalPeli = new VerticalLayout();
-        Label labelNombre = new Label("Nombre");
-        Label labelNit = new Label("Nit");
+        Label labelNombre = new Label(nombre);
+        Label labelNit = new Label(nit);
         verticalPeli.addComponent(labelNombre);
         verticalPeli.addComponent(labelNit);
         
@@ -91,9 +91,13 @@ public class CinemaView extends CustomComponent implements View{
         combobox.setNullSelectionAllowed(false);
         
 		List<Cinema> cinemas;
-
+		
+		
 		cinemas = interfaceCine.consultarCinemasPorEmpresa(Integer.valueOf(id));
 		for (Cinema cinema : cinemas) {
+			cinema.setIdEmpresa(Integer.valueOf(id));
+			cinema.setNombreEmpresa(nombre);
+			cinema.setNit(nit);
 			combobox.addItem(cinema.getNombre());
 		}
                 

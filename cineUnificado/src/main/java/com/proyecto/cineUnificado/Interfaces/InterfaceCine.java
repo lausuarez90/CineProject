@@ -9,6 +9,8 @@ public interface InterfaceCine  {
 	
 	public List<Empresa> consultarEmpresas();
 	
+	public Empresa consultarEmpresaPorId(int id);
+	
 	public List<Cinema> consultarCinemasPorEmpresa(int idEmpresa);
 
 }

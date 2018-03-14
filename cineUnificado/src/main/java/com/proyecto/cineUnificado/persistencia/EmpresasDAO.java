@@ -50,4 +50,31 @@ public class EmpresasDAO {
 		return empresas;
 	}
  
+	public Empresa consultarEmpresaPorId(int id) {
+
+		connection = conexionBD.getConnection();
+		
+		Empresa empresa = null;
+		PreparedStatement pst;
+		try {
+			pst = connection.prepareStatement("SELECT * FROM empresa where id = ?");
+			pst.setInt(1, id);
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				empresa = new Empresa();
+				empresa.setIdEmpresa(rs.getInt(1));
+				empresa.setNombreEmpresa(rs.getString(2));
+				empresa.setNit(rs.getString(3));
+				System.out.print(empresa.toString());
+				
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return empresa;
+	}
 }
