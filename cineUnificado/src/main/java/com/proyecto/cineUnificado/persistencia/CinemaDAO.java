@@ -15,20 +15,20 @@ public class CinemaDAO {
 	Connection connection = null;
 	ConexionBD conexionBD;
 	
-	public CinemaDAO() {
+	public CinemaDAO(Connection connection) {
 		
-		conexionBD = new ConexionBD();
+		this.connection = connection;
 	}
 	
 	public List<Cinema> consultarCinemaPorEmpresa(int idTipoCinema) throws SQLException{
 		
-		connection = conexionBD.getConnection();
+//		connection = conexionBD.getConnection();
 		
 		List<Cinema> cinemas = new ArrayList<Cinema>();
 		
 		PreparedStatement pst = null;
 		try {
-			pst = connection.prepareStatement("SELECT * FROM cinema WHERE id_tipo_cinema = ?");
+			pst = this.connection.prepareStatement("SELECT * FROM cinema WHERE id_tipo_cinema = ?");
 			pst.setInt(1, idTipoCinema);
 			ResultSet rs = pst.executeQuery();
 			
@@ -57,13 +57,13 @@ public class CinemaDAO {
 	
 	public Cinema consultaCinemaporId(int idCinema) throws SQLException{
 		
-		connection = conexionBD.getConnection();
+//		connection = conexionBD.getConnection();
 		
 		Cinema cinema = null;
 		
 		PreparedStatement pst = null;
 		try {
-			pst = connection.prepareStatement("SELECT * FROM cinema WHERE id = ?");
+			pst = this.connection.prepareStatement("SELECT * FROM cinema WHERE id = ?");
 			pst.setInt(1, idCinema);
 			ResultSet rs = pst.executeQuery();
 			
@@ -92,13 +92,13 @@ public class CinemaDAO {
 	
 	public List<CinemaPelicula> consultarPeliculasporCinema(int idCinema) throws SQLException{
 		
-		connection = conexionBD.getConnection();
+//		connection = conexionBD.getConnection();
 		
 		List<CinemaPelicula> peliculas = new ArrayList<CinemaPelicula>();
 		
 		PreparedStatement pst = null;
 		try {
-			pst = connection.prepareStatement("SELECT * FROM cinema_pelicula cp WHERE cp.id_cinema = ?");
+			pst = this.connection.prepareStatement("SELECT * FROM cinema_pelicula cp WHERE cp.id_cinema = ?");
 			pst.setInt(1, idCinema);
 			ResultSet rs = pst.executeQuery();
 			

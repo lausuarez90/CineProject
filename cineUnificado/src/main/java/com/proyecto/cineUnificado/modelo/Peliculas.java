@@ -2,6 +2,7 @@ package com.proyecto.cineUnificado.modelo;
 
 public class Peliculas {
 
+	
 	private int id;
 	private double duracion;
 	private String calificacion;
@@ -53,5 +54,9 @@ public class Peliculas {
 		this.clasificacion = clasificacion;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Peliculas [id=" + id + ", duracion=" + duracion + ", calificacion=" + calificacion + ", nombre="
+				+ nombre + ", reseña=" + reseña + ", genero=" + genero + ", clasificacion=" + clasificacion + "]";
+	}
 }

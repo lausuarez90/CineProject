@@ -50,7 +50,7 @@ public class MyUI extends UI {
     	
     	Navigator navigator = new Navigator(this, this);
     	navigator.addView(CinemaView.NAME, new CinemaView());
-    	navigator.addView(PeliculaView.NAME, new PeliculaView());
+    	
     	
     	navigator.addProvider(viewProvider);
     	navigator.navigateTo(EmpresaView.NAME);    	

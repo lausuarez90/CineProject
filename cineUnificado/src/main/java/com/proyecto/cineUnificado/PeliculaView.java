@@ -1,5 +1,6 @@
 package com.proyecto.cineUnificado;
 
+import com.proyecto.cineUnificado.modelo.Peliculas;
 import com.vaadin.cdi.CDIUI;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -19,8 +20,18 @@ public class PeliculaView extends CustomComponent implements View{
 	
 	private static final long serialVersionUID = 1L;
 	public final static String NAME = "pelicula";
+	private Peliculas peliculaSeleccionada;
 	
-	public PeliculaView() {
+	public PeliculaView(Peliculas pelicula) {		
+		this.peliculaSeleccionada = pelicula;
+		
+		
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		
+		Notification.show("Estas en pelicula ");
 		
 		VerticalLayout verticalGeneral = new VerticalLayout();
 		verticalGeneral.setSizeFull();
@@ -32,22 +43,33 @@ public class PeliculaView extends CustomComponent implements View{
 		verti.setSizeFull();
 		
 		HorizontalLayout detallePeli = new HorizontalLayout();
-		detallePeli.setSpacing(true);
+//		detallePeli.setSpacing(true);
+		detallePeli.setSizeFull();
+		
+		HorizontalLayout horiImagePeli = new HorizontalLayout();		
 		
 		ThemeResource resourcePeli = new ThemeResource("images/cinepolis2.png");
         Image imagePeli = new Image("", resourcePeli);
         
-        detallePeli.addComponent(imagePeli);
-        detallePeli.setComponentAlignment(imagePeli, Alignment.MIDDLE_CENTER);
+        horiImagePeli.addComponent(imagePeli);
+        horiImagePeli.setComponentAlignment(imagePeli, Alignment.MIDDLE_CENTER);
+        
+        detallePeli.addComponent(horiImagePeli);
+        detallePeli.setComponentAlignment(horiImagePeli, Alignment.MIDDLE_CENTER);
+        
         
         VerticalLayout duraPeli = new VerticalLayout();
+//        duraPeli.setSizeFull();
         
-        Label nombre = new Label("Nombre");
-        Label duracion = new Label("Duracion: " + "12");
-        Label genero = new Label("Genero: " + "Terror");
-        Label clasificacion = new Label("Clasificacion: " + "A12");
-        Label calificacion = new Label("Calificacion: " + "Bueno");
+        Label nombre = new Label(this.peliculaSeleccionada.getNombre());
+        Label duracion = new Label("Duracion: " + this.peliculaSeleccionada.getDuracion());
+        Label genero = new Label("Genero: " + this.peliculaSeleccionada.getGenero());
+        Label clasificacion = new Label("Clasificacion: " + this.peliculaSeleccionada.getClasificacion());
+        Label calificacion = new Label("Calificacion: " + this.peliculaSeleccionada.getCalificacion());
         TextArea resena = new TextArea("Reseña ");
+        resena.setWidth("500px");
+        resena.setHeight("120px");
+        resena.setValue(this.peliculaSeleccionada.getReseña());
         
         duraPeli.addComponent(nombre);
         duraPeli.addComponent(duracion);
@@ -57,7 +79,7 @@ public class PeliculaView extends CustomComponent implements View{
         duraPeli.addComponent(resena);
 		
         detallePeli.addComponent(duraPeli);
-        detallePeli.setComponentAlignment(duraPeli, Alignment.MIDDLE_LEFT);
+        detallePeli.setComponentAlignment(duraPeli, Alignment.MIDDLE_CENTER);
         
         Panel panelHorarios = new Panel("Horarios");
         
@@ -95,11 +117,7 @@ public class PeliculaView extends CustomComponent implements View{
 		
 		setCompositionRoot(verticalGeneral);
 		
-	}
-
-	@Override
-	public void enter(ViewChangeEvent event) {
-		Notification.show("Estas en pelicula");		
+			
 	}
 	
 	

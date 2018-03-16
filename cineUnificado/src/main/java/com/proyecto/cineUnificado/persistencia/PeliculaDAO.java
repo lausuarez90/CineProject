@@ -13,18 +13,18 @@ public class PeliculaDAO {
 	Connection connection = null;
 	ConexionBD conexionBD;
 	
-	public PeliculaDAO() {
-		conexionBD = new ConexionBD();
+	public PeliculaDAO(Connection connection) {
+		this.connection = connection;
 	}
 	
 	public Pelicula consultarPeliculaPorId(int id) {
 
-		connection = conexionBD.getConnection();
+//		connection = conexionBD.getConnection();
 		
 		Pelicula pelicula = null;
 		PreparedStatement pst;
 		try {
-			pst = connection.prepareStatement("SELECT * FROM pelicula where id = ?");
+			pst = this.connection.prepareStatement("SELECT * FROM pelicula where id = ?");
 			pst.setInt(1, id);
 			ResultSet rs = pst.executeQuery();
 

@@ -10,6 +10,7 @@ import com.proyecto.cineUnificado.modelo.Cinema;
 import com.proyecto.cineUnificado.modelo.Empresa;
 import com.proyecto.cineUnificado.modelo.Peliculas;
 import com.proyecto.cineUnificado.persistencia.CinemaDAO;
+import com.proyecto.cineUnificado.persistencia.ConexionBD;
 import com.proyecto.cineUnificado.persistencia.EmpresasDAO;
 import com.proyecto.cineUnificado.persistencia.PeliculaDAO;
 import com.proyecto.cineUnificado.persistencia.entities.CinemaPelicula;
@@ -21,10 +22,12 @@ public class ImpInterfaceCine implements InterfaceCine{
 	CinemaDAO cinemaDAO;
 	PeliculaDAO peliculaDAO;
 
+	
 	public ImpInterfaceCine() {
-		empresasDAO = new EmpresasDAO();
-		cinemaDAO = new CinemaDAO();
-		peliculaDAO = new PeliculaDAO();
+		ConexionBD conection = new ConexionBD();
+		empresasDAO = new EmpresasDAO(conection.getConnection());
+		cinemaDAO = new CinemaDAO(conection.getConnection());
+		peliculaDAO = new PeliculaDAO(conection.getConnection());
 	}
 	
 	public List<Empresa> consultarEmpresas(){

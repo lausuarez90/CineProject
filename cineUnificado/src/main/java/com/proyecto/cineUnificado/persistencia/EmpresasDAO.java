@@ -16,20 +16,20 @@ public class EmpresasDAO {
 	ConexionBD conexionBD;
 	
 	
-	public EmpresasDAO() {
+	public EmpresasDAO(Connection connection) {
 		
-		conexionBD = new ConexionBD();
+		this.connection = connection;
 	}
 	
 	public List<Empresa> consultarEmpresas(){
 		
-		connection = conexionBD.getConnection();
+//		connection = conexionBD.getConnection();
 		
 		List<Empresa> empresas = new ArrayList<Empresa>();
 		
 		PreparedStatement pst;
 		try {
-			pst = connection.prepareStatement("SELECT * FROM empresa");
+			pst = this.connection.prepareStatement("SELECT * FROM empresa");
 			ResultSet rs = pst.executeQuery();
 			
 			while (rs.next()) {
@@ -52,12 +52,12 @@ public class EmpresasDAO {
  
 	public Empresa consultarEmpresaPorId(int id) {
 
-		connection = conexionBD.getConnection();
+//		connection = conexionBD.getConnection();
 		
 		Empresa empresa = null;
 		PreparedStatement pst;
 		try {
-			pst = connection.prepareStatement("SELECT * FROM empresa where id = ?");
+			pst = this.connection.prepareStatement("SELECT * FROM empresa where id = ?");
 			pst.setInt(1, id);
 			ResultSet rs = pst.executeQuery();
 
