@@ -10,6 +10,7 @@ public class Peliculas {
 	private String reseña;
 	private String genero;
 	private String clasificacion;
+	private String imagen;
 	
 	public int getId() {
 		return id;
@@ -52,11 +53,17 @@ public class Peliculas {
 	}
 	public void setClasificacion(String clasificacion) {
 		this.clasificacion = clasificacion;
+	}	
+	public String getImagen() {
+		return imagen;
 	}
-	
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
 	@Override
 	public String toString() {
 		return "Peliculas [id=" + id + ", duracion=" + duracion + ", calificacion=" + calificacion + ", nombre="
-				+ nombre + ", reseña=" + reseña + ", genero=" + genero + ", clasificacion=" + clasificacion + "]";
+				+ nombre + ", reseña=" + reseña + ", genero=" + genero + ", clasificacion=" + clasificacion
+				+ ", imagen=" + imagen + "]";
 	}
 }

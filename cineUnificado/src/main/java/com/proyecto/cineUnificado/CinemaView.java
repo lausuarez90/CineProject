@@ -149,29 +149,9 @@ public class CinemaView extends CustomComponent implements View{
 			        	
 					for (Peliculas pelicula : peliculas) {
 
-						ThemeResource resource = null;
+						ThemeResource resource = new ThemeResource("images/" + pelicula.getImagen());;
 						Button buttonCinepo = new Button();
-						if (pelicula.getNombre().equals("3 anuncios por un crimen")){
-							resource = new ThemeResource("images/anunciosCrimen.jpg");
-						}else if (pelicula.getNombre().equals("Coco")){
-							resource = new ThemeResource("images/coco.jpg");
-						}else if (pelicula.getNombre().equals("Deseo de matar")){
-							resource = new ThemeResource("images/deseoMatar.jpg");
-						}else if (pelicula.getNombre().equals("El robo perfecto")){
-							resource = new ThemeResource("images/roboPerfecto.jpg");
-						}else if (pelicula.getNombre().equals("La forma del agua")){
-							resource = new ThemeResource("images/formaAgua.jpg");
-						}else if (pelicula.getNombre().equals("El cavernícola")){
-							resource = new ThemeResource("images/cavernicola.jpg");
-						}else if (pelicula.getNombre().equals("La maldición de la casa Winchester")){
-							resource = new ThemeResource("images/maldicionCasa.jpg");
-						}else if (pelicula.getNombre().equals("Noche de juegos")){
-							resource = new ThemeResource("images/nocheJuegos.jpg");
-						}else if (pelicula.getNombre().equals("Pantera Negra")){
-							resource = new ThemeResource("images/panteraNegra.jpg");
-						}
-						
-						
+											
 						buttonCinepo.setIcon(resource);
 						buttonCinepo.setHeight("170px");
 						buttonCinepo.setWidth("251px");

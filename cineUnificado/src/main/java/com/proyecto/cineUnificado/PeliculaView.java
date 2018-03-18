@@ -48,7 +48,7 @@ public class PeliculaView extends CustomComponent implements View{
 		
 		HorizontalLayout horiImagePeli = new HorizontalLayout();		
 		
-		ThemeResource resourcePeli = new ThemeResource("images/cinepolis2.png");
+		ThemeResource resourcePeli = new ThemeResource("images/" + this.peliculaSeleccionada.getImagen());
         Image imagePeli = new Image("", resourcePeli);
         
         horiImagePeli.addComponent(imagePeli);
@@ -68,7 +68,7 @@ public class PeliculaView extends CustomComponent implements View{
         Label calificacion = new Label("Calificacion: " + this.peliculaSeleccionada.getCalificacion());
         TextArea resena = new TextArea("Reseña ");
         resena.setWidth("500px");
-        resena.setHeight("120px");
+        resena.setHeight("250px");
         resena.setValue(this.peliculaSeleccionada.getReseña());
         
         duraPeli.addComponent(nombre);

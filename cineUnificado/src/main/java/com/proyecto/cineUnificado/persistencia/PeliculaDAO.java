@@ -34,9 +34,10 @@ public class PeliculaDAO {
 				pelicula.setDuracion(rs.getInt(2));
 				pelicula.setCalificacion(rs.getString(3));
 				pelicula.setNombre(rs.getString(4));
-				pelicula.setReseña(rs.getString(5));
+				pelicula.setResena(rs.getString(5));
 				pelicula.setGenero(rs.getString(6));
 				pelicula.setClasificacion(rs.getString(7));
+				pelicula.setImagen(rs.getString(8));
 				System.out.print(pelicula.toString());
 				
 			}

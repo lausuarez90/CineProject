@@ -136,7 +136,8 @@ public class ImpInterfaceCine implements InterfaceCine{
 			peliculas.setDuracion(pelicula.getDuracion());
 			peliculas.setGenero(pelicula.getGenero());
 			peliculas.setNombre(pelicula.getNombre());
-			peliculas.setReseña(pelicula.getReseña());
+			peliculas.setReseña(pelicula.getResena());
+			peliculas.setImagen(pelicula.getImagen());
 		}
 		
 		return peliculas;
