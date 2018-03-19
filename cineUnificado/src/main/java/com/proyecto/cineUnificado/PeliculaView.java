@@ -85,6 +85,7 @@ public class PeliculaView extends CustomComponent implements View{
         TextArea resena = new TextArea("Reseña ");
         resena.setWidth("500px");
         resena.setHeight("200px");
+
         resena.setValue(this.peliculaSeleccionada.getReseña());
         
         duraPeli.addComponent(nombre);
