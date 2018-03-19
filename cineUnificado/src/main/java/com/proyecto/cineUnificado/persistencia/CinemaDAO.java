@@ -22,8 +22,6 @@ public class CinemaDAO {
 	
 	public List<Cinema> consultarCinemaPorEmpresa(int idTipoCinema) throws SQLException{
 		
-//		connection = conexionBD.getConnection();
-		
 		List<Cinema> cinemas = new ArrayList<Cinema>();
 		
 		PreparedStatement pst = null;
@@ -121,5 +119,38 @@ public class CinemaDAO {
 		return peliculas;
 	}
 	
+	
+	public CinemaPelicula consultarCinemaPelulaPorCinemayPelicula(int idCinema, int idPelicula) throws SQLException {
+
+		// connection = conexionBD.getConnection();
+
+		CinemaPelicula cinemaPelicula = null;
+
+		PreparedStatement pst = null;
+		try {
+			pst = this.connection.prepareStatement("SELECT * FROM cinema_pelicula cp WHERE cp.id_cinema = ? and cp.id_pelicula = ?");
+			pst.setInt(1, idCinema);
+			pst.setInt(2, idPelicula);
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				cinemaPelicula = new CinemaPelicula();
+				cinemaPelicula.setId(rs.getInt(1));
+				cinemaPelicula.setIdCinema(rs.getInt(2));
+				cinemaPelicula.setIdPelicula(rs.getInt(3));
+				System.out.print(cinemaPelicula.toString());
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			pst.close();
+		}
+
+		return cinemaPelicula;
+
+	}
 
 }

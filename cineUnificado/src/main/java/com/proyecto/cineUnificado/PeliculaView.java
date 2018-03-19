@@ -1,11 +1,22 @@
 package com.proyecto.cineUnificado;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import com.proyecto.cineUnificado.ImpInterface.ImpInterfaceCine;
+import com.proyecto.cineUnificado.Interfaces.InterfaceCine;
+import com.proyecto.cineUnificado.modelo.Horario;
 import com.proyecto.cineUnificado.modelo.Peliculas;
+import com.proyecto.cineUnificado.modelo.Sala;
 import com.vaadin.cdi.CDIUI;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -20,23 +31,28 @@ public class PeliculaView extends CustomComponent implements View{
 	
 	private static final long serialVersionUID = 1L;
 	public final static String NAME = "pelicula";
+	InterfaceCine interfaceCine;
 	private Peliculas peliculaSeleccionada;
 	
 	public PeliculaView(Peliculas pelicula) {		
 		this.peliculaSeleccionada = pelicula;
-		
+		interfaceCine = new ImpInterfaceCine();
 		
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+		
 		Notification.show("Estas en pelicula ");
+		String[] cinema = event.getParameters().split("/");
+		String cinemaId = cinema[0];
 		
 		VerticalLayout verticalGeneral = new VerticalLayout();
 		verticalGeneral.setSizeFull();
 		
-		Panel panelPelicula = new Panel("Cinepolis");
+		Panel panelPelicula = new Panel(this.peliculaSeleccionada.getNombre());
 		panelPelicula.setSizeFull();
 		
 		VerticalLayout verti = new VerticalLayout();
@@ -48,7 +64,7 @@ public class PeliculaView extends CustomComponent implements View{
 		
 		HorizontalLayout horiImagePeli = new HorizontalLayout();		
 		
-		ThemeResource resourcePeli = new ThemeResource("images/cinepolis2.png");
+		ThemeResource resourcePeli = new ThemeResource("images/" + this.peliculaSeleccionada.getImagen());
         Image imagePeli = new Image("", resourcePeli);
         
         horiImagePeli.addComponent(imagePeli);
@@ -68,7 +84,7 @@ public class PeliculaView extends CustomComponent implements View{
         Label calificacion = new Label("Calificacion: " + this.peliculaSeleccionada.getCalificacion());
         TextArea resena = new TextArea("Reseña ");
         resena.setWidth("500px");
-        resena.setHeight("120px");
+        resena.setHeight("200px");
         resena.setValue(this.peliculaSeleccionada.getReseña());
         
         duraPeli.addComponent(nombre);
@@ -87,23 +103,51 @@ public class PeliculaView extends CustomComponent implements View{
         
         VerticalLayout salas = new VerticalLayout();
         
-        Label nombreSala = new Label("Digital " + "idioma");
+        ComboBox combobox = new ComboBox("Seleccione un fecha");
+        combobox.setInvalidAllowed(false);
+        combobox.setNullSelectionAllowed(false);
         
-        salas.addComponent(nombreSala);
+        salas.addComponent(combobox);
+        
+        List<Horario> fechas = interfaceCine.consultarFechas();
+    	for (Horario horario : fechas) {
+    		if (!combobox.containsId(horario)){
+    			combobox.addItems(formatoFecha.format(horario.getFecha()));
+    		}        		
+		}            
+        
+        List<Sala> salaPeli = interfaceCine.consultarSalaporPeliculasCinema(Integer.valueOf(cinemaId).intValue(), this.peliculaSeleccionada.getId());
         
         HorizontalLayout horariosSala = new HorizontalLayout();
         horariosSala.setSpacing(true);
+         
+        combobox.addValueChangeListener(new ValueChangeListener() {
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				Notification.show("Selecciono fecha " +combobox.getValue());
+				 for (Sala sala : salaPeli) {			        	
+			        	Label nombreSala = new Label(sala.getNombre() + " " + sala.getIdioma());            
+			            salas.addComponent(nombreSala);
+			            List<Horario> horarios;
+						try {
+							horarios = interfaceCine.consultarHorariosPorSala(formatoFecha.parse((String) combobox.getValue()), sala.getId());
+							for (Horario horaSala : horarios) {
+								 Label hora = new Label(horaSala.getHora());
+								 horariosSala.addComponent(hora);								 
+							}
+							salas.addComponent(horariosSala);
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			           
+					}				
+			}
+        	
+        });
         
-        Label hora1 = new Label("12:30 pm");
-        Label hora2 = new Label("03:15 pm");
-        Label hora3 = new Label("06:00 pm");
-        
-        horariosSala.addComponent(hora1);
-        horariosSala.addComponent(hora2);
-        horariosSala.addComponent(hora3);
-        
-        salas.addComponent(horariosSala);
-        
+           
         horarios.addComponent(salas);
         
         panelHorarios.setContent(horarios);
@@ -119,6 +163,7 @@ public class PeliculaView extends CustomComponent implements View{
 		
 			
 	}
+	
 	
 	
 

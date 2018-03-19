@@ -1,5 +1,6 @@
 package com.proyecto.cineUnificado.modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sala {
@@ -8,6 +9,7 @@ public class Sala {
 	private String nombre;
 	private int numSillas;
 	private String idioma;
+	private List peliculas = new ArrayList<>();
 	private List<Horario> horarios;
 	private List<Silla> sillas;
 	
@@ -46,6 +48,16 @@ public class Sala {
 	}
 	public void setIdioma(String idioma) {
 		this.idioma = idioma;
+	}
+	public List getPeliculas() {
+		return peliculas;
+	}
+	public List setPeliculas(Peliculas pelicula) {
+		if (!peliculas.contains(pelicula)){
+			peliculas.add(pelicula);
+		}
+		return peliculas;
+		
 	}
 	
 

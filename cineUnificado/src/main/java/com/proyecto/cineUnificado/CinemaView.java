@@ -22,6 +22,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -121,7 +122,7 @@ public class CinemaView extends CustomComponent implements View{
         horizontalCinema.setComponentAlignment(combobox, Alignment.TOP_LEFT);
         
                
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        GridLayout gridLayout = new GridLayout(4,2);
         
         Panel panel = new Panel(nombre);
         panel.setSizeUndefined();
@@ -145,49 +146,29 @@ public class CinemaView extends CustomComponent implements View{
 				 List<Peliculas> peliculas = cinemaEncontrado.getCartelera().getPeliculas();
 			        
 			        if (peliculas != null){
-			        	horizontalLayout.removeAllComponents();
+			        	gridLayout.removeAllComponents();
 			        	
-					for (Peliculas pelicula : peliculas) {
+			        	for (Peliculas pelicula : peliculas) {
 
-						ThemeResource resource = null;
-						Button buttonCinepo = new Button();
-						if (pelicula.getNombre().equals("3 anuncios por un crimen")){
-							resource = new ThemeResource("images/anunciosCrimen.jpg");
-						}else if (pelicula.getNombre().equals("Coco")){
-							resource = new ThemeResource("images/coco.jpg");
-						}else if (pelicula.getNombre().equals("Deseo de matar")){
-							resource = new ThemeResource("images/deseoMatar.jpg");
-						}else if (pelicula.getNombre().equals("El robo perfecto")){
-							resource = new ThemeResource("images/roboPerfecto.jpg");
-						}else if (pelicula.getNombre().equals("La forma del agua")){
-							resource = new ThemeResource("images/formaAgua.jpg");
-						}else if (pelicula.getNombre().equals("El cavernícola")){
-							resource = new ThemeResource("images/cavernicola.jpg");
-						}else if (pelicula.getNombre().equals("La maldición de la casa Winchester")){
-							resource = new ThemeResource("images/maldicionCasa.jpg");
-						}else if (pelicula.getNombre().equals("Noche de juegos")){
-							resource = new ThemeResource("images/nocheJuegos.jpg");
-						}else if (pelicula.getNombre().equals("Pantera Negra")){
-							resource = new ThemeResource("images/panteraNegra.jpg");
+							ThemeResource resource = new ThemeResource("images/" + pelicula.getImagen());
+							Button buttonCinepo = new Button();
+												
+							buttonCinepo.setIcon(resource);
+							buttonCinepo.setHeight("170px");
+							buttonCinepo.setWidth("251px");
+							buttonCinepo.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+							buttonCinepo.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+							buttonCinepo.addClickListener(e -> {							
+								getUI().getNavigator().addView(PeliculaView.NAME, new PeliculaView(pelicula));
+								getUI().getNavigator().navigateTo(PeliculaView.NAME + "/" + cinema.getId());
+							});
+
+							gridLayout.addComponent(buttonCinepo);
+							gridLayout.setComponentAlignment(buttonCinepo, Alignment.MIDDLE_CENTER);
+							gridLayout.setMargin(true);
+							gridLayout.setSpacing(true);
+
 						}
-						
-						
-						buttonCinepo.setIcon(resource);
-						buttonCinepo.setHeight("170px");
-						buttonCinepo.setWidth("251px");
-						buttonCinepo.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-						buttonCinepo.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-						buttonCinepo.addClickListener(e -> {							
-							getUI().getNavigator().addView(PeliculaView.NAME, new PeliculaView(pelicula));
-							getUI().getNavigator().navigateTo(PeliculaView.NAME);
-						});
-
-						horizontalLayout.addComponent(buttonCinepo);
-						horizontalLayout.setComponentAlignment(buttonCinepo, Alignment.MIDDLE_CENTER);
-						horizontalLayout.setMargin(true);
-						horizontalLayout.setSpacing(true);
-
-					}
 			        }
 								
 			}
@@ -247,7 +228,7 @@ public class CinemaView extends CustomComponent implements View{
 //        horizontalLayout.setMargin(true);
 //        horizontalLayout.setSpacing(true);
         
-        panel.setContent(horizontalLayout);
+        panel.setContent(gridLayout);
         
         HorizontalLayout horiCinema = new HorizontalLayout();
         horiCinema.addComponent(panel);
